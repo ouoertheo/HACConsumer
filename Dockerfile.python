@@ -14,8 +14,7 @@ COPY ./package-lock.json package-lock.json
 RUN poetry install 
 
 COPY ./hacconsumer hacconsumer
-# COPY ./students.json hacconsumer/students.json
-# COPY ./.env .env
+COPY ./.env .env
 
 # Install Python dependencies
 CMD ["poetry","run", "python","-m", "hacconsumer"]
