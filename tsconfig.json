@@ -1,0 +1,9 @@
+{
+    "compilerOptions": {
+        "target": "ES6",
+        "module": "commonjs",
+        "outDir": "./hacconsumer/static",
+        "rootDir": "./src",
+        "strict": true
+    }
+}

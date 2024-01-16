@@ -1,0 +1,39 @@
+version: '3'
+
+services:
+  go-app:
+    build:
+      context: .
+      dockerfile: Dockerfile.go
+      args:
+        - GO_VERSION=1.19
+    ports:
+      - "3000:3000"
+
+  python-app:
+    build:
+      context: .
+      dockerfile: Dockerfile.python
+      args:
+        - PYTHON_VERSION=3.11
+    ports:
+      - "3001:3001"
+    env_file:
+      - .env
+    volumes:
+      - e_drive_cache:/app/hacconsumer/cache
+      - e_drive_config:/app/hacconsumer/config
+
+volumes:
+  e_drive_cache:
+    driver: local
+    driver_opts:
+      type: none
+      device: E:\Docker\hacconsumer\cache
+      o: bind
+  e_drive_config:
+    driver: local
+    driver_opts:
+      type: none
+      device: E:\Docker\hacconsumer\config
+      o: bind

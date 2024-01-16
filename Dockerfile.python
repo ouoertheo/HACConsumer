@@ -1,0 +1,21 @@
+# Dockerfile.python
+
+FROM python:3.11
+
+RUN pip install poetry
+
+# Set the working directory inside the container
+WORKDIR /app
+
+# Copy the Python application source code into the container
+COPY ./pyproject.toml pyproject.toml
+COPY ./package-lock.json package-lock.json
+
+RUN poetry install 
+
+COPY ./hacconsumer hacconsumer
+COPY ./students.json hacconsumer/students.json
+COPY ./.env .env
+
+# Install Python dependencies
+CMD ["poetry","run", "python","-m", "hacconsumer"]

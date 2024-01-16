@@ -1,0 +1,5 @@
+students.json
+.env
+node_modules
+__pycache__
+.vscode

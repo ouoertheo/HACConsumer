@@ -1,0 +1,81 @@
+/* cyber-vapor.css */
+
+:root {
+    --color-dark: #100F10;
+    --color-light: #E0E0E0;
+    --color-accent: #FF71CE;
+    --color-highlight: #01CDFE;
+    --color-secondary: #05FFA1;
+}
+
+body.bg-dark {
+    background-color: var(--color-dark) !important;
+}
+
+.text-light {
+    color: var(--color-light) !important;
+}
+
+.btn-primary {
+    background-color: var(--color-accent) !important;
+    border-color: var(--color-accent) !important;
+}
+
+.btn-warning {
+    background-color: var(--color-highlight) !important;
+    border-color: var(--color-highlight) !important;
+}
+
+.btn-success {
+    background-color: var(--color-secondary) !important;
+    border-color: var(--color-secondary) !important;
+}
+
+.modal-content.bg-dark {
+    background-color: rgba(16, 15, 16, 0.9);
+}
+
+.table.table-dark,
+.table-bordered,
+.table-striped tbody tr:nth-of-type(odd),
+.dataTables_wrapper .dataTables_paginate .paginate_button.current,
+.dataTables_wrapper .dataTables_paginate .paginate_button.current:hover{
+background-color :var (--acccent)
+}
+
+.btn {
+    position: relative;
+    overflow: hidden;
+}
+
+.btn::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -150%;
+    width: 300%;
+    height: 100%;
+    background-image: linear-gradient(45deg, transparent, rgba(255, 255, 255, .2), transparent);
+    transition : all .75s cubic-bezier(.19,.53,.26,.97)
+}
+
+.btn:hover::after{
+transform : translateX(50%);
+opacity:.7 ;
+}
+
+
+.btn-primary {
+   /* ... */
+   box-shadow: 0 0 15px var(--color-accent);
+}
+
+.btn-warning {
+   /* ... */
+   box-shadow: 0 0 15px var(--color-highlight);
+}
+
+.btn-success {
+   /* ... */
+   box-shadow: 0 0 15px var(--color-secondary);
+}

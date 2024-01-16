@@ -1,0 +1,1 @@
+Rename `students.default.json` to `students.json`. Edit the file and fill out the name and credentials.
