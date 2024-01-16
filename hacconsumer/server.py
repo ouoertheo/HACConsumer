@@ -10,7 +10,10 @@ import dotenv
 
 
 dotenv.load_dotenv()
-FRONTEND_PORT = int(os.getenv("FRONTEND_PORT")) or 3001
+try:
+    FRONTEND_PORT = int(os.getenv("FRONTEND_PORT"))
+except:
+    FRONTEND_PORT = 3001
 
 app = FastAPI()
 cwd = Path(__file__)
