@@ -27,8 +27,5 @@ COPY --from=go-builder /go/app/.env /app/api/.env
 # Set the working directory inside the container
 WORKDIR /app/api
 
-# Expose any necessary ports
-EXPOSE 3000
-
 # Define the command to run when the container starts
 CMD ["/app/api/go-app"]
