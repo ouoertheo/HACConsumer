@@ -12,7 +12,7 @@ RUN apt install git
 # Clone the Go application source code into the container
 ARG REPO_URL=https://github.com/Threqt1/HACApi.git
 RUN git clone $REPO_URL .
-COPY .env .env
+# COPY .env .env
 
 # Build the Go application
 RUN CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -o /go/bin/go-app
