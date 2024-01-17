@@ -23,17 +23,5 @@ services:
     ports:
       - "$FRONTEND_PORT:$FRONTEND_PORT"
     volumes:
-      - cache_volume:/app/hacconsumer/cache
-      - config_volume:/app/hacconsumer/config
-
-volumes:
-  cache_volume:
-    driver: local
-    driver_opts:
-      device: ${LOCAL_CACHE_VOLUME_PATH}
-      o: bind
-  config_volume:
-    driver: local
-    driver_opts:
-      device: ${LOCAL_CONFIG_VOLUME_PATH}
-      o: bind
+      - ${LOCAL_CACHE_VOLUME_PATH}:/app/hacconsumer/cache
+      - ${LOCAL_CONFIG_VOLUME_PATH}:/app/hacconsumer/config
