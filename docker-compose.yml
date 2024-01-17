@@ -23,19 +23,19 @@ services:
     ports:
       - "3001:$FRONTEND_PORT"
     volumes:
-      - e_drive_cache:/app/hacconsumer/cache
-      - e_drive_config:/app/hacconsumer/config
+      - cache_volume:/app/hacconsumer/cache
+      - config_volume:/app/hacconsumer/config
 
 volumes:
-  e_drive_cache:
+  cache_volume:
     driver: local
     driver_opts:
       type: none
-      device: E:\Docker\hacconsumer\cache
+      device: ${LOCAL_CACHE_VOLUME_PATH}
       o: bind
-  e_drive_config:
+  config_volume:
     driver: local
     driver_opts:
       type: none
-      device: E:\Docker\hacconsumer\config
+      device: ${LOCAL_CONFIG_VOLUME_PATH}
       o: bind

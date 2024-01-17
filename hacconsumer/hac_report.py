@@ -14,7 +14,7 @@ os.chdir(cwd.parent)
 
 HAC_API_BASE = f"http://go-app:{os.getenv('SERVER_PORT')}/api/v1"
 HAC_URL_BASE = os.getenv("HAC_URL_BASE")
-CACHE_FOLDER = "cache"
+CACHE_FOLDER = Path("cache")
 CACHE_TTL = 24 * 60 * 60 * 1000
 
 
@@ -47,29 +47,40 @@ class CacheEntry:
 class HacApiConsumer:
     def __init__(self) -> None:
         self.cache_folder = CACHE_FOLDER
+        logger.info(
+            f"HacApiConsumer initialized with cache location: {self.cache_folder.resolve()}"
+        )
         self.cache: dict[str, CacheEntry] = {}
         self._create_cache_folder()
         self._load_existing_cache()
 
     def _create_cache_folder(self):
-        if not os.path.exists(self.cache_folder):
+        if not self.cache_folder.exists():
+            logger.info(
+                f"Cache folder does not exist, creating at {self.cache_folder.resolve()}"
+            )
             os.makedirs(self.cache_folder)
 
     def _get_cache_path(self, key):
-        return os.path.join(self.cache_folder, f"{key}.json")
+        return self.cache_folder.joinpath(f"{key}.json")
 
     def _load_existing_cache(self):
-        for entry_file in os.listdir(self.cache_folder):
-            entry_path = os.path.join(self.cache_folder, entry_file)
-            if os.path.isfile(entry_path):
-                with open(entry_path, "r") as file:
+        logger.info(
+            f"Found cache files in {self.cache_folder.resolve()}: {[entry_file for entry_file in self.cache_folder.iterdir()]}"
+        )
+
+        for entry_file in self.cache_folder.iterdir():
+            if entry_file.is_file():
+                logger.info(f"Loading cache file {entry_file.resolve()}")
+                with open(entry_file, "r") as file:
                     data = json.load(file)
                     cache_entry = CacheEntry(data["key"], data["data"], data["ttl"])
                     self.cache[data["key"]] = cache_entry
 
-    def _save_cache(self, entry):
+    def _save_cache(self, entry: CacheEntry):
         cache_path = self._get_cache_path(entry.key)
-        with open(cache_path, "w") as file:
+        with cache_path.open("w") as file:
+            logger.info(f"Saving cache entry {cache_path.resolve()}")
             json.dump({"key": entry.key, "data": entry.data, "ttl": entry.ttl}, file)
 
     def post_cached(self, *args, **kwargs):
@@ -86,11 +97,11 @@ class HacApiConsumer:
             return data
 
     def clear_cache(self):
+        logger.warning(f"Clearing cache at {self.cache_folder.resolve()}")
         self.cache = {}
-        for entry_file in os.listdir(self.cache_folder):
-            entry_path = os.path.join(self.cache_folder, entry_file)
-            if os.path.isfile(entry_path):
-                os.remove(entry_path)
+        for entry_file in self.cache_folder.iterdir():
+            if entry_file.is_file():
+                entry_file.unlink()
 
     def get_student_base_payload(self, student: HACStudent):
         return {
