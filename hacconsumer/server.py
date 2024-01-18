@@ -55,7 +55,7 @@ def get_students() -> list[HACStudent]:
                 need_assignments = True
 
         if need_assignments:
-            logger.info(f"Students do now have assignments. Getting assignments.")
+            logger.info(f"No student assignments found. Fetching assignments.")
             assignment_service.parse_all()
             for student in assignment_service.students:
                 logger.info(f" n")

@@ -104,11 +104,13 @@ class HacApiConsumer:
                 entry_file.unlink()
 
     def get_student_base_payload(self, student: HACStudent):
-        return {
+        payload = {
             "base": HAC_URL_BASE,
             "username": student.username,
             "password": student.password,
         }
+        logger.info(f"Returning base {payload}")
+        return payload
 
     def get_assignments_raw(self, student: HACStudent):
         payload = self.get_student_base_payload(student) | {
