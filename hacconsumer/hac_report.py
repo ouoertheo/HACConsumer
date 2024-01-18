@@ -87,10 +87,15 @@ class HacApiConsumer:
         key = md5(f"{args}{kwargs}".encode("utf-8")).hexdigest()
         if key in self.cache and self.cache[key].is_valid():
             logger.info(f"Retrieved cache entry {key}")
+            if "err" in data and data["err"]:
+                self.clear_cache()
+                return self.post_cached(*args, **kwargs)
             return self.cache[key].data
         else:
             logger.info(f"Key {key} not cached. Making fresh call")
             data = requests.post(*args, **kwargs).json()
+            if "err" in data and data["err"]:
+                raise Exception(data["msg"])
             cache_entry = CacheEntry(key, data, CACHE_TTL)
             self.cache[key] = cache_entry
             self._save_cache(cache_entry)
