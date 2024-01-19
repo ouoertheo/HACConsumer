@@ -99,7 +99,9 @@ class HacApiConsumer:
                 return self.post_cached(*args, **kwargs)
             return data
         else:
-            logger.info(f"Key {key} not cached. Making fresh call")
+            logger.info(
+                f"Key {key} not cached. Making fresh call. Params: {args, kwargs}"
+            )
             data = requests.post(*args, **kwargs).json()
             if "err" in data and data["err"]:
                 raise Exception(data["msg"])
