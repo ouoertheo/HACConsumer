@@ -86,6 +86,7 @@ class HacApiConsumer:
     def post_cached(self, *args, **kwargs):
         key = md5(f"{args}{kwargs}".encode("utf-8")).hexdigest()
         if key in self.cache and self.cache[key].is_valid():
+            data = self.cache[key].data
             logger.info(f"Retrieved cache entry {key}")
             if "err" in data and data["err"]:
                 logger.info(
@@ -93,7 +94,7 @@ class HacApiConsumer:
                 )
                 self.clear_cache()
                 return self.post_cached(*args, **kwargs)
-            return self.cache[key].data
+            return data
         else:
             logger.info(f"Key {key} not cached. Making fresh call")
             data = requests.post(*args, **kwargs).json()
