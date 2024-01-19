@@ -118,6 +118,7 @@ def delete_student(student_name: str) -> None:
 
 def run():
     # Get all assignments at the start
+    logger.info("Starting server.")
     assignment_service.load_students()
     assignment_service.parse_all()
     uvicorn.run(app, host="0.0.0.0", port=FRONTEND_PORT)
