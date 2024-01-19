@@ -73,6 +73,9 @@ class HacApiConsumer:
             if entry_file.is_file():
                 logger.info(f"Loading cache file {entry_file.resolve()}")
                 with open(entry_file, "r") as file:
+                    if "err" in data and data["err"]:
+                        logger.info(f"Error found in cached data, clearing cache.")
+                        self.clear_cache()
                     data = json.load(file)
                     cache_entry = CacheEntry(data["key"], data["data"], data["ttl"])
                     self.cache[data["key"]] = cache_entry
