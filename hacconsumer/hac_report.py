@@ -88,6 +88,9 @@ class HacApiConsumer:
         if key in self.cache and self.cache[key].is_valid():
             logger.info(f"Retrieved cache entry {key}")
             if "err" in data and data["err"]:
+                logger.info(
+                    f"Error found in cached data, clearing cache and trying again..."
+                )
                 self.clear_cache()
                 return self.post_cached(*args, **kwargs)
             return self.cache[key].data
