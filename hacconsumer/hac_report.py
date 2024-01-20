@@ -130,7 +130,10 @@ class HacApiConsumer:
         payload = self.get_student_base_payload(student) | {
             "markingPeriods": [1, 2, 3, 4]
         }
-        data = self.post_cached(HAC_API_BASE + "/classwork", json=payload)
+        try:
+            data = self.post_cached(HAC_API_BASE + "/classwork", json=payload)
+        except Exception as e:
+            logger.exception(e)
         return data
 
 

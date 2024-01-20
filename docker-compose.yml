@@ -11,6 +11,9 @@ services:
       - .env
     ports:
       - "$SERVER_PORT:$SERVER_PORT"
+    dns:
+      - $DNS_SERVER1
+      - $DNS_SERVER2
 
   python-app:
     build:
@@ -25,3 +28,6 @@ services:
     volumes:
       - ${LOCAL_CACHE_VOLUME_PATH}:/app/hacconsumer/cache
       - ${LOCAL_CONFIG_VOLUME_PATH}:/app/hacconsumer/config
+    dns:
+      - $DNS_SERVER1
+      - $DNS_SERVER2
