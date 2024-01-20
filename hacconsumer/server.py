@@ -27,12 +27,17 @@ assignment_service = AssignmentService(api_consumer)
 
 @app.get("/static/{filename}")
 def static(filename: str) -> FileResponse:
-    if filename.endswith(".js"):
-        return FileResponse(
-            f"static/{filename}", headers={"content-type": "application/javascript"}
-        )
-    if filename.endswith(".css"):
-        return FileResponse(f"static/{filename}", headers={"content-type": "text/css"})
+    content_mappings = {
+        "js": "application/javascript",
+        "css": "text/css",
+        "ico": "image/x-icon",
+    }
+    extension = filename.split(".")[-1]
+    if extension in content_mappings:
+        headers = {"content-type": content_mappings[extension]}
+    else:
+        headers = {}
+    return FileResponse(f"static/{filename}", headers=headers)
 
 
 @app.get("/")
