@@ -132,9 +132,9 @@ class HacApiConsumer:
         }
         try:
             data = self.post_cached(HAC_API_BASE + "/classwork", json=payload)
+            return data
         except Exception as e:
             logger.exception(e)
-        return data
 
 
 class AssignmentService:
@@ -203,17 +203,14 @@ class AssignmentService:
         student.assignments = []
 
         # Grab assignments from HAC
-        logger.info(
-            f"Fetching student assignments {student.name}. Parsing assignments now..."
-        )
+        logger.info(f"Fetching student assignments {student.name}.")
         assignments = self.api_consumer.get_assignments_raw(student)
         if "err" in assignments and assignments["err"]:
             raise Exception(assignments["msg"])
-        logger.info(
-            f"Fetched student assignments {student.name}. Parsing assignments now..."
-        )
+        logger.info(f"Assignments fetched. Parsing assignments.")
 
         # String together data about class, assignments and grade to populate rows
+        logger.debug(f"Raw assignments: {assignments['classwork']}")
         for grading_period in assignments["classwork"]:
             period = grading_period["sixWeeks"]
             for class_entry in grading_period["entries"]:
